@@ -1,4 +1,3 @@
-var User = require('../model/user');
 var bcrypt = require('bcryptjs');
 
 module.exports.createUser = function(newUser, salt, callback) {
@@ -6,3 +5,4 @@ module.exports.createUser = function(newUser, salt, callback) {
     newUser.password = bcrypt.hashSync(newUser.email, currentSalt);
     newUser.save(callback);
 };
+
