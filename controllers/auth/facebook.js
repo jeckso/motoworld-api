@@ -8,7 +8,7 @@ const credentials = {
     profileFields: ['id', 'displayName', 'email']
 };
 
-module.exports.register = function(passport) {
+module.exports = function(passport) {
     passport.use(new FacebookStrategy(
         credentials,
         function(accessToken, refreshToken, profile, cb) {

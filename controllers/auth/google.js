@@ -7,7 +7,7 @@ const credentials = {
     callbackURL: "http://www.example.com/auth/google/callback"
 };
 
-module.exports.register = function(passport) {
+module.exports = function(passport) {
     passport.use(new GoogleStrategy(
         credentials,
         function(accessToken, refreshToken, profile, cb) {

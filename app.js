@@ -15,11 +15,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // region add routers
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+var auth = require('./routes/auth');
+app.use('/auth', auth);
 // endregion add routers
 
 // region middleware
