@@ -4,7 +4,7 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 router.post('/product', (req, res, next) => {
         let newProduct = new Product({
-
+            product_id:req.body.product_id,
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
