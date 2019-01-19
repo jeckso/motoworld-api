@@ -1,51 +1,50 @@
+var crypto = require('crypto');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const config = require('../config/database');
-
-// User Schema
-
-const UserSchema = mongoose.Schema ({
-    name: {
-        type: String
-    },
-    email: {
-        type: String,
-        required: true
-    },
+var Schema = mongoose.Schema;
+// User
+var User = new Schema({
     username: {
         type: String,
+        unique: true,
         required: true
     },
-    password: {
+    hashedPassword: {
         type: String,
         required: true
+    },
+    salt: {
+        type: String,
+        required: true
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 });
 
-const User = module.exports = mongoose.model('User', UserSchema);
+User.methods.encryptPassword = function(password) {
+    return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
+    //more secure – return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
+};
 
-module.exports.getUserById = function(id, callback) {
-    User.findById(id, callback);
-}
-
-module.exports.getUserByUsername = function(username, callback) {
-    const query = {username: username}
-    User.findOne(query, callback);
-}
-
-module.exports.addUser = function(newUser, callback) {
-    bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if(err) throw err;
-            newUser.password = hash;
-            newUser.save(callback);
-        });
+User.virtual('userId')
+    .get(function () {
+        return this.id;
     });
-}
 
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-    bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
-        if(err) throw err;
-        callback(null, isMatch);
-    });
-}
+User.virtual('password')
+    .set(function(password) {
+        this._plainPassword = password;
+        this.salt = crypto.randomBytes(32).toString('hex');
+        //more secure - this.salt = crypto.randomBytes(128).toString('hex');
+        this.hashedPassword = this.encryptPassword(password);
+    })
+    .get(function() { return this._plainPassword; });
+
+
+User.methods.checkPassword = function(password) {
+    return this.encryptPassword(password) === this.hashedPassword;
+};
+
+var UserModel = mongoose.model('User', User);
+module.exports.UserModel = UserModel;

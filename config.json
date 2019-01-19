@@ -1,0 +1,9 @@
+{
+  "port" : 8080,
+  "security": {
+    "tokenLife" : 3600
+  },
+  "mongoose": {
+    "uri": "mongodb://admin:admin123@ds253284.mlab.com:53284/motoworld"
+  }
+}

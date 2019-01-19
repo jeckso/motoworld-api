@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const logger = require('morgan');
 const config = require('./config/database');
-
+const oauth2 = require('./lib/auth/oauth2');
 const user = require('./routes/user');
 const order = require('./routes/order');
 const products = require('./routes/product');
@@ -26,6 +26,24 @@ mongoose.connection.on('error', (err) => {
 });
 
 const app = express();
+//Oauth
+app.use(passport.initialize());
+
+require('./lib/auth/auth');
+
+app.post('/oauth/token', oauth2.token);
+
+app.get('/api/userInfo',
+    passport.authenticate('bearer', { session: false }),
+    function(req, res) {
+        // req.authInfo is set using the `info` argument supplied by
+        // `BearerStrategy`.  It is typically used to indicate a scope of the token,
+        // and used in access control checks.  For illustrative purposes, this
+        // example simply returns the scope in the response.
+        res.json({ user_id: req.user.userId, name: req.user.username, scope: req.authInfo.scope })
+    }
+);
+//End
 app.locals.paypal = config.paypal;
 app.locals.locale = config.locale;
 
