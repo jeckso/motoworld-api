@@ -10,7 +10,7 @@ router.get('/:id', (req, res) => {
     produtcs.findById(req, res);
 });
 
-router.getAll('/', (req, res) => {
+router.get('/', (req, res) => {
     produtcs.getAll(req, res);
 });
 

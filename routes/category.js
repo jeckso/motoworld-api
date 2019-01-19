@@ -11,12 +11,12 @@ router.get('/:id', (req, res) => {
     categories.findById(req, res);
 });
 
-router.getAll('/', (req, res) => {
-    categories.getAll(req, res);
+router.get('/:category_id/products', (req, res) => {
+    products.getByProductId(req, res);
 });
 
-router.getAllProducts('/:category_id/products', (req, res) => {
-    products.getByProductId(req, res);
+router.get('/', (req, res) => {
+    categories.getAll(req, res);
 });
 
 router.put('/:id', (req, res) => {

@@ -5,9 +5,14 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-var passport = require('passport');
-var logger = require('morgan');
+const passport = require('passport');
+const logger = require('morgan');
 const config = require('./config/database');
+
+const user = require('./routes/user');
+const order = require('./routes/order');
+const products = require('./routes/product');
+const categories = require('./routes/category');
 
 // Connect To Database (OLD CODE)
 mongoose.connect(config.database, {useMongoClient: true});
@@ -169,4 +174,10 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log('Server started on port ' + port);
 });
+
+app.use('/users', user);
+app.use('/orders', order);
+app.use('/categories', categories);
+app.use('/products', products);
+
 module.exports = app;

@@ -6,7 +6,7 @@ router.get('/:id', (req, res) => {
     users.findById(req, res);
 });
 
-router.getAll('/', (req, res) => {
+router.get('/', (req, res) => {
     users.getAll(req, res);
 });
 
