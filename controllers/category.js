@@ -8,7 +8,8 @@ function createCategoryFromBody(body) {
 }
 
 module.exports.create = (req, res) => {
-    let category = new Category(createCategoryFromBody(req));
+    let category = new Category(createCategoryFromBody(req.body));
+    console.log(category);
     category.save(err => {
         if (err) return res.status(500).send(err);
         return res.status(201).send(new Category(category));

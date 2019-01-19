@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const orders = require('../controllers/order')
 
-router.post('/:id', (req, res) => {
+router.post('/', (req, res) => {
     orders.create(req, res);
 });
 

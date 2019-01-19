@@ -3,7 +3,7 @@ const router = express.Router();
 const categories = require('../controllers/category')
 const products = require('../controllers/product')
 
-router.post('/:id', (req, res) => {
+router.post('/', (req, res) => {
     categories.create(req, res);
 });
 

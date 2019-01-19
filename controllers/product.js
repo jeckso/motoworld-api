@@ -12,7 +12,8 @@ function createBodyFromBody(body) {
 }
 
 module.exports.create = (req, res) => {
-    let product = new Product(createBodyFromBody(req));
+    let product = new Product(createBodyFromBody(req.body));
+    console.log(product);
     product.save(err => {
         if (err) return res.status(500).send(err);
         return res.status(201).send(new Product(product));
@@ -32,7 +33,7 @@ module.exports.findById = (req, res) => {
 module.exports.getByProductId = (req, res) => {
     Product.find()
         .select()
-        .where('category', req.category_id)
+        .where('category', req.params.category_id)
         .sort({ name: 'asc' })
         .exec((err, products) => {
             if (err) {
@@ -41,6 +42,7 @@ module.exports.getByProductId = (req, res) => {
                 return res.status(200).send(products);
             }
         });
+
 };
 
 module.exports.getAll = (req, res) => {
