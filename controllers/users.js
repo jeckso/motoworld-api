@@ -5,4 +5,3 @@ module.exports.createUser = function(newUser, salt, callback) {
     newUser.password = bcrypt.hashSync(newUser.email, currentSalt);
     newUser.save(callback);
 };
-
