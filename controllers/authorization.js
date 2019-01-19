@@ -10,3 +10,4 @@ module.exports.facebookAuthCallback = () => passport.authenticate('facebook', { 
 
 module.exports.googleAuth = () => passport.authenticate('google', { scope: ['profile'] });
 module.exports.googleAuthCallback = () => passport.authenticate('google', { failureRedirect: '/login' });
+
