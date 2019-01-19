@@ -14,11 +14,11 @@ route.getAll('/', (req, res) => {
     orders.getAll(req, res);
 });
 
-route.get('/:id', (req, res) => {
+route.put('/:id', (req, res) => {
     orders.update(req, res);
 });
 
-route.get('/:id', (req, res) => {
+route.delete('/:id', (req, res) => {
     orders.delete(req, res);
 });
 
