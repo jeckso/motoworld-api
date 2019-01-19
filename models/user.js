@@ -2,7 +2,7 @@ var crypto = require('crypto');
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 // User
-var User = new Schema({
+var UserSchema = new Schema({
     username: {
         type: String,
         unique: true,
@@ -22,17 +22,17 @@ var User = new Schema({
     }
 });
 
-User.methods.encryptPassword = function(password) {
+UserSchema.methods.encryptPassword = function(password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
     //more secure – return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
 };
 
-User.virtual('userId')
+UserSchema.virtual('userId')
     .get(function () {
         return this.id;
     });
 
-User.virtual('password')
+UserSchema.virtual('password')
     .set(function(password) {
         this._plainPassword = password;
         this.salt = crypto.randomBytes(32).toString('hex');
@@ -42,9 +42,7 @@ User.virtual('password')
     .get(function() { return this._plainPassword; });
 
 
-User.methods.checkPassword = function(password) {
+UserSchema.methods.checkPassword = function(password) {
     return this.encryptPassword(password) === this.hashedPassword;
 };
-
-var UserModel = mongoose.model('User', User);
-module.exports.UserModel = UserModel;
+const User = module.exports = mongoose.model('User', UserSchema);

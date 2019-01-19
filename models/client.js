@@ -1,7 +1,7 @@
 var crypto = require('crypto');
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Client = new Schema({
+var ClientSchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -17,6 +17,4 @@ var Client = new Schema({
         required: true
     }
 });
-
-var ClientModel = mongoose.model('Client', Client);
-module.exports.ClientModel = ClientModel;
+const Client = module.exports = mongoose.model('Client', ClientSchema);

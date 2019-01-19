@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node %NODE_DEBUG_OPTION% app"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

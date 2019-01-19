@@ -10,6 +10,7 @@ const logger = require('morgan');
 const config = require('./config/database');
 const oauth2 = require('./lib/auth/oauth2');
 const user = require('./routes/user');
+const client = require('./routes/client');
 const order = require('./routes/order');
 const products = require('./routes/product');
 const categories = require('./routes/category');
@@ -194,6 +195,7 @@ app.listen(port, () => {
 });
 
 app.use('/users', user);
+app.use('/clients', client);
 app.use('/orders', order);
 app.use('/categories', categories);
 app.use('/products', products);
