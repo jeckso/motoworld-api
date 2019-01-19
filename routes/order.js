@@ -1,25 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const produtcs = require('../controllers/product')
+const orders = require('../controllers/order')
 
 router.post('/:id', (req, res) => {
-    produtcs.create(req, res);
+    orders.create(req, res);
 });
 
 router.get('/:id', (req, res) => {
-    produtcs.findById(req, res);
+    orders.findById(req, res);
 });
 
 router.get('/', (req, res) => {
-    produtcs.getAll(req, res);
+    orders.getAll(req, res);
 });
 
 router.put('/:id', (req, res) => {
-    produtcs.update(req, res);
+    orders.update(req, res);
 });
 
 router.delete('/:id', (req, res) => {
-    produtcs.delete(req, res);
+    orders.delete(req, res);
 });
 
 module.exports = router;
+

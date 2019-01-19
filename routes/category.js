@@ -1,21 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product');
-const Category = require('../models/category');
-router.post('/category', (req, res, next) => {
-        let newCategory = new Category({
-            name: req.body.name,
-            date_of_creation: req.body.date_of_creation,
-            }
-        );
-        Category.addCategory(newCategory,(err,product)=> {
-            if(err) {
-                res.json({success: false, msg: 'Failed to register category'});
-            } else {
-                res.json({success: true, msg: 'Category registered'});
-            }
-        });
+const categories = require('../controllers/category')
+const products = require('../controllers/product')
 
-    }
-)
+router.post('/:id', (req, res) => {
+    categories.create(req, res);
+});
+
+router.get('/:id', (req, res) => {
+    categories.findById(req, res);
+});
+
+router.get('/:category_id/products', (req, res) => {
+    products.getByProductId(req, res);
+});
+
+router.get('/', (req, res) => {
+    categories.getAll(req, res);
+});
+
+router.put('/:id', (req, res) => {
+    categories.update(req, res);
+});
+
+router.delete('/:id', (req, res) => {
+    categories.delete(req, res);
+});
+
 module.exports = router;

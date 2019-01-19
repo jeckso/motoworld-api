@@ -5,23 +5,14 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-var passport = require('passport');
-var logger = require('morgan');
+const passport = require('passport');
+const logger = require('morgan');
 const config = require('./config/database');
-var createError = require('http-errors');
-var router = express.Router();
 
-// Connect To Database (NEW) But not working!!!!!!!!!! (because of secret in db.js!!!!!)
-//const db = require('./config/database');
-// Map global promise - get rid of warning
-//mongoose.Promise = global.Promise;
-// Connect to mongoose
-//mongoose.connect(db.mongoURI, {
-//useMongoClient: true
-//})
-//.then(() => console.log('MongoDB Connected...'))
-//.catch(err => console.log(err));
-
+const user = require('./routes/user');
+const order = require('./routes/order');
+const products = require('./routes/product');
+const categories = require('./routes/category');
 
 // Connect To Database (OLD CODE)
 mongoose.connect(config.database, {useMongoClient: true});
@@ -41,10 +32,7 @@ app.locals.locale = config.locale;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.set('env', 'development');
-const users = require('./routes/users');
-const product = require('./routes/product');
-const category = require('./routes/category');
-const Products = require('./models/product');
+
 const Cart = require('./lib/Cart');
 const Security = require('./lib/Security');
 // Port Number
@@ -87,35 +75,6 @@ app.use(session({
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.use('/users', users);
-app.use('/shop', product);
-app.use('/shop', category);
-// Index Route
-app.get('/', (req, res) => {
-    if(!req.session.cart) {
-        req.session.cart = {
-            items: [],
-            totals: 0.00,
-            formattedTotals: ''
-        };
-    }
-    Products.find({price: {'$gt': 0}}).sort({price: -1}).limit(6).then(products => {
-        let format = new Intl.NumberFormat(req.app.locals.locale.lang, {style: 'currency', currency: req.app.locals.locale.currency });
-        products.forEach( (product) => {
-            product.formattedPrice = format.format(product.price);
-        });
-        res.render('index', {
-            pageTitle: 'Node.js Shopping Cart',
-            products: products,
-            nonce: Security.md5(req.sessionID + req.headers['user-agent'])
-        });
-
-    }).catch(err => {
-        res.status(400).send('Bad request');
-    });
-
-});
 
 app.get('/cart', (req, res) => {
     let sess = req.session;
@@ -211,16 +170,14 @@ if (app.get('env') === 'development') {
 app.use((err, req, res, next) => {
     res.status(err.status || 500);
 });
-// app.get('/', (req, res) => {
-//     res.send('invaild endpoint');
-// });
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public/index.html'));
-// });
-
-// Start Server
 app.listen(port, () => {
     console.log('Server started on port ' + port);
 });
+
+app.use('/users', user);
+app.use('/orders', order);
+app.use('/categories', categories);
+app.use('/products', products);
+
 module.exports = app;
