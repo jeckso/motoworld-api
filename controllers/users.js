@@ -1,4 +1,4 @@
-var bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 const User = require('../models/category');
 
 module.exports.createUser = function(newUser, salt, callback) {
