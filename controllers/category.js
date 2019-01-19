@@ -1,25 +1,22 @@
-const Order = require('../models/order');
+const Category = require('../models/category');
 
-
-function createOrderFromBody(body) {
-    let order = {};
-    order.description = body.description;
-    order.delivery = body.delivery;
-    order.products = body.products;
-    order.date_of_creation = body.date_of_creation ? body.date_of_creation : Date();
-    return order;
+function createCategoryFromBody(body) {
+    let category = {};
+    category.name = body.name;
+    category.date_of_creation = body.date_of_creation ? body.date_of_creation : Date();
+    return category;
 }
 
 module.exports.create = (req, res) => {
-    const order = new Order(createOrderFromBody(req.body));
-    order.save(err => {
+    let category = new Category(createCategoryFromBody(req));
+    category.save(err => {
         if (err) return res.status(500).send(err);
-        return res.status(201).send(order);
+        return res.status(201).send(new Category(category));
     });
 };
 
 module.exports.findById = (req, res) => {
-    Order.findById(req.params.id, (err, order) => {
+    Category.findById(req.params.id, (err, order) => {
         if (err) {
             return res.status(500).send(err)
         } else {
@@ -29,26 +26,22 @@ module.exports.findById = (req, res) => {
 };
 
 module.exports.getAll = (req, res) => {
-    Order.find()
+    Category.find()
         .select()
-        .limit(req.query.pageSize)
-        .skip(req.query.page * req.query.pageSize)
-        .sort({
-            date_of_creation: 'asc'
-        })
-        .exec((err, orders) => {
+        .sort({ name: 'asc' })
+        .exec((err, categories) => {
             if (err) {
                 return res.status(500).send(err)
             } else {
-                return res.status(200).send(orders);
+                return res.status(200).send(categories);
             }
         });
 };
 
 module.exports.update = (req, res) => {
-    Order.findByIdAndUpdate(
+    Category.findByIdAndUpdate(
         req.params.id,
-        createOrderFromBody(req.body),
+        createCategoryFromBody(req.body),
         (err, order) => {
             if (err) {
                 return res.status(500).send(err)
@@ -59,7 +52,7 @@ module.exports.update = (req, res) => {
 };
 
 module.exports.delete = (req, res) => {
-    Order.findByIdAndRemove(req.id, (err, order) => {
+    Category.findByIdAndRemove(req.id, (err, order) => {
         if (err) {
             return res.status(500).send(err)
         } else {

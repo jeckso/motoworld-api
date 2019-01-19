@@ -13,8 +13,9 @@ var CategorySchema = new Schema(
 CategorySchema
     .virtual('url')
     .get(function () {
-        return '/catalog/author/' + this._id;
+        return '/categories/' + this._id;
     });
+
 const Category = module.exports = mongoose.model('Category', CategorySchema);
 module.exports.addCategory = function (newCategory, callback) {
     newCategory.save(callback);
