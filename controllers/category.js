@@ -16,11 +16,11 @@ module.exports.create = (req, res) => {
 };
 
 module.exports.findById = (req, res) => {
-    Category.findById(req.params.id, (err, order) => {
+    Category.findById(req.params.id, (err, category) => {
         if (err) {
             return res.status(500).send(err)
         } else {
-            return res.status(200).send(order);
+            return res.status(200).send(category);
         }
     });
 };
@@ -42,21 +42,21 @@ module.exports.update = (req, res) => {
     Category.findByIdAndUpdate(
         req.params.id,
         createCategoryFromBody(req.body),
-        (err, order) => {
+        (err, category) => {
             if (err) {
                 return res.status(500).send(err)
             } else {
-                return res.status(200).send(order);
+                return res.status(200).send(category);
             }
         });
 };
 
 module.exports.delete = (req, res) => {
-    Category.findByIdAndRemove(req.id, (err, order) => {
+    Category.findByIdAndRemove(req.id, (err, category) => {
         if (err) {
             return res.status(500).send(err)
         } else {
-            return res.status(200).send(order);
+            return res.status(200).send(category);
         }
     });
 };

@@ -4,7 +4,6 @@ const config = require('../config/database');
 var Schema = mongoose.Schema;
 var ProductSchema = new Schema(
     {
-        product_id: {type: Number, required: true},
         name: {type: String, required: true, max: 100},
         description: {type: String, required: true, max: 100},
         price: {type: Number, required: true, min:0},
