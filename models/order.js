@@ -20,13 +20,3 @@ OrderSchema
 
 const Order = module.exports = mongoose.model('Order', OrderSchema);
 
-module.exports.addOrder = function (newOrder, callback) {
-    newOrder.save(callback);
-}
-module.exports.getOrderById = function (id, callback) {
-    Order.findById(id, callback);
-}
-module.exports.getOrderByName = function (name, callback) {
-    const query = {name: name}
-    Order.findOne(query, callback);
-}

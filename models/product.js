@@ -22,13 +22,3 @@ ProductSchema
 
 const Product = module.exports = mongoose.model('Product', ProductSchema);
 
-module.exports.addProduct = function (newProduct, callback) {
-    newProduct.save(callback);
-}
-module.exports.getProductById = function (id, callback) {
-    Product.findById(id, callback);
-}
-module.exports.getProductByName = function (name, callback) {
-    const query = {name: name}
-    Product.findOne(query, callback);
-}
