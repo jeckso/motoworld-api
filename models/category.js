@@ -17,6 +17,4 @@ CategorySchema
     });
 
 const Category = module.exports = mongoose.model('Category', CategorySchema);
-module.exports.addCategory = function (newCategory, callback) {
-    newCategory.save(callback);
-}
+
