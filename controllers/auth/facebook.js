@@ -1,5 +1,5 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
-var User = require('../users');
+var User = require('../user');
 
 const credentials = {
     clientID: "619888358451066",

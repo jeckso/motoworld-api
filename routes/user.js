@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../controllers/users');
+const users = require('../controllers/user');
 
 router.get('/:id', (req, res) => {
     users.findById(req, res);

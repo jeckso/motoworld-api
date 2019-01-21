@@ -1,5 +1,5 @@
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
-var User = require('../users');
+var User = require('../user');
 
 const credentials = {
     clientID: "222883819559-kn6puk7egmkkv5p8kfetaek1tfu8lt19.apps.googleusercontent.com",

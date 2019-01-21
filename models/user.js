@@ -1,48 +1,45 @@
-var crypto = require('crypto');
-const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-// User
-var UserSchema = new Schema({
+// Load required packages
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+
+// Define our user schema
+var UserSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
         required: true
     },
-    hashedPassword: {
+    password: {
         type: String,
         required: true
-    },
-    salt: {
-        type: String,
-        required: true
-    },
-    created: {
-        type: Date,
-        default: Date.now
     }
 });
 
-UserSchema.methods.encryptPassword = function(password) {
-    return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
-    //more secure – return crypto.pbkdf2Sync(password, this.salt, 10000, 512);
-};
+// Execute before each user.save() call
+UserSchema.pre('save', function(callback) {
+    var user = this;
 
-UserSchema.virtual('userId')
-    .get(function () {
-        return this.id;
+    // Break out if the password hasn't changed
+    if (!user.isModified('password')) return callback();
+
+    // Password changed so we need to hash it
+    bcrypt.genSalt(5, function(err, salt) {
+        if (err) return callback(err);
+
+        bcrypt.hash(user.password, salt, null, function(err, hash) {
+            if (err) return callback(err);
+            user.password = hash;
+            callback();
+        });
     });
+});
 
-UserSchema.virtual('password')
-    .set(function(password) {
-        this._plainPassword = password;
-        this.salt = crypto.randomBytes(32).toString('hex');
-        //more secure - this.salt = crypto.randomBytes(128).toString('hex');
-        this.hashedPassword = this.encryptPassword(password);
-    })
-    .get(function() { return this._plainPassword; });
-
-
-UserSchema.methods.checkPassword = function(password) {
-    return this.encryptPassword(password) === this.hashedPassword;
+UserSchema.methods.verifyPassword = function(password, cb) {
+    bcrypt.compare(password, this.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
 };
-const User = module.exports = mongoose.model('User', UserSchema);
+
+// Export the Mongoose model
+module.exports = mongoose.model('User', UserSchema);
