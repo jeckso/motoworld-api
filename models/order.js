@@ -6,7 +6,8 @@ const Product = require('./product');
 var Schema = mongoose.Schema;
 var OrderSchema = new Schema(
     {
-        description: {type: String, required: true, max: 100},
+        user_id:{type: Schema.Types.ObjectId, ref: 'User', required: true},
+        description : {type: String, max: 100},
         delivery: {type: String, required: true},
         sum: Number,
         items: [{id: String, quantity: Number}],
@@ -25,7 +26,10 @@ OrderSchema.method('getSum', function (cb) {
         for (var i in docs) {
             sum += docs[i].price;
         }
-        cb(sum);
+        let extended = {};
+        extended.sum = sum;
+        extended.items = docs;
+        cb(extended);
     })
 });
 

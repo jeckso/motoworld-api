@@ -4,6 +4,7 @@ const Product = require('../models/product');
 
 function createOrderFromBody(body) {
     let order = {};
+    order.user_id = body.user_id;
     order.description = body.description;
     order.delivery = body.delivery;
     order.items = body.items;
@@ -14,6 +15,7 @@ function createOrderFromBody(body) {
 
 function createOrderFromBodyAsync(body, callback) {
     let order = {};
+    order.user_id = body.user_id;
     order.description = body.description;
     order.delivery = body.delivery;
     order.items = body.items;
@@ -71,9 +73,11 @@ module.exports.findById = (req, res) => {
         if (err) {
             return res.status(500).send(err)
         } else {
-            order.getSum(s => {
-                console.log(s);
-                res.status(200).send(order);
+            if (!order) {
+                return res.status(404).send({});
+            }
+            order.getSum((extended) => {
+                res.status(200).send({order: order, extended: extended});
             })
         }
     });

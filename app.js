@@ -95,7 +95,9 @@ router.route('/beers/:beer_id')
 router.route('/users')
     .post(userController.postUsers)
     .get(authController.isAuthenticated, userController.getUsers);
-
+router.route('/users/login')
+    .post(userController.postUsers)
+    .get(authController.isAuthenticated, userController.getUsers);
 // Create endpoint handlers for /clients
 router.route('/clients')
     .post(authController.isAuthenticated, clientController.postClients)
@@ -132,6 +134,7 @@ app.use('/api2',oauth2);
 app.use('/api', router);
 app.use('/clients', client);
 app.use('/orders', order);
+app.use('/users',user);
 app.use('/categories', categories);
 app.use('/products', products);
 
