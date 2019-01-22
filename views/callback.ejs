@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Decision</title>
+</head>
+<body>
+<p>Hi <%= user.username %>!</p>
+<p><b><%= client.name %></b> do you want to <b>authorize</b> to your account.</p>
+<p>Do you approve?</p>
+
+<form action="/api/oauth2/token" method="post">
+    <input name="code" type="hidden" value="<%= Code %>">
+    <input name="grant_type" type="hidden" value="authorization_code">
+    <input name="redirect_uri" type="hidden" value="http://motoworld.me/api2/">
+    <div>
+        <input type="submit" value="Allow" id="allow">
+        <input type="submit" value="Deny" name="cancel" id="deny">
+    </div>
+</form>
+
+</body>
+</html>
