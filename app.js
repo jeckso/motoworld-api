@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+var request = require('request');
+var redirect = require("express-redirect");
 var session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -8,11 +10,16 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const logger = require('morgan');
 const config = require('./config/database');
+const fileUpload = require('express-fileupload');
 const user = require('./routes/user');
 const client = require('./routes/client');
 const order = require('./routes/order');
 const products = require('./routes/product');
 const categories = require('./routes/category');
+const oauth2 = require('./routes/oauth2');
+const image = require('./routes/image');
+// const oauth = require('./lib/image');
+
 var userController = require('./controllers/user');
 var authController = require('./controllers/auth/local');
 var oauth2Controller = require('./controllers/oauth2');
@@ -30,6 +37,7 @@ mongoose.connection.on('error', (err) => {
 });
 
 const app = express();
+redirect(app);
 app.set('view engine', 'ejs');
 app.locals.paypal = config.paypal;
 app.locals.locale = config.locale;
@@ -51,6 +59,9 @@ app.use(cors());
 app.use("/public", express.static(__dirname + '/public'));
 app.use(logger('dev'));
 app.use(express.json());
+app.use(fileUpload({
+    limits: { fileSize: 100 * 1024 * 1024 },
+}));
 // Set Static Folder
 
 
@@ -99,6 +110,7 @@ router.route('/oauth2/authorize')
 router.route('/oauth2/token')
     .post(authController.isClientAuthenticated, oauth2Controller.token);
 
+
 // Register all our routes with /api
 
 
@@ -115,6 +127,8 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log('Server started on port ' + port);
 });
+app.use('/image', image);
+app.use('/api2',oauth2);
 app.use('/api', router);
 app.use('/clients', client);
 app.use('/orders', order);

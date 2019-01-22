@@ -72,6 +72,7 @@ server.grant(oauth2orize.grant.code(function(client, redirectUri, user, ares, ca
 server.exchange(oauth2orize.exchange.code(function(client, code, redirectUri, callback) {
     console.log(client);
     Code.findOne({ value: code }, function (err, authCode) {
+        console.log(authCode+"SOSI");
         if (err) { return callback(err); }
         if (authCode === undefined) { return callback(null, false); }
         if (client._id.toString() !== authCode.clientId) { return callback(null, false); }
@@ -124,7 +125,7 @@ exports.authorization = [
         });
     }),
     function(req, res){
-        res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
+    res.render('dialog', { transactionID: req.oauth2.transactionID, user: req.user, client: req.oauth2.client });
     }
 ]
 
