@@ -22,7 +22,7 @@ module.exports.create = (req, res) => {
 module.exports.getByProductId = (req, res) => {
     Product.find()
         .select()
-        .where('category', req.category_id)
+        .where('category', req.params.category_id)
         .sort({ name: 'asc' })
         .exec((err, products) => {
             if (err) {
@@ -79,7 +79,7 @@ module.exports.update = (req, res) => {
 };
 
 module.exports.delete = (req, res) => {
-    Product.findByIdAndRemove(req.id, (err, product) => {
+    Product.findByIdAndRemove(req.params.id, (err, product) => {
         if (err) {
             return res.status(500).send(err)
         } else {

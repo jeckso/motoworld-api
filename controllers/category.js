@@ -53,7 +53,7 @@ module.exports.update = (req, res) => {
 };
 
 module.exports.delete = (req, res) => {
-    Category.findByIdAndRemove(req.id, (err, category) => {
+        Category.findOneAndDelete(req.params.id, (err, category) => {
         if (err) {
             return res.status(500).send(err)
         } else {

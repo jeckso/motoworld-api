@@ -96,23 +96,24 @@ module.exports.CodePost = (req, res,callback) => {
         grant_type: 'authorization_code',
         redirect_uri: 'http://motoworld.me/api2/'
     };
+    // res.render('callback', { Code: req.query.code, user: req.user, client: req.oauth2.client });
     // console.log(jsonObj.code);
-    request.post({
-        headers: {
-            'content-type': 'application/json',
-            'Authorization': 'Basic bW90b3dvcmxkOnRvcHNlY3JldA=='
-        },
-        json: true,
-        url: 'http://motoworld.me/api/oauth2/token',
-        body: jsonObj
-    }, function (error, response, body) {
+    // request.post({
+    //     headers: {
+    //         'content-type': 'application/json',
+    //         'Authorization': 'Basic bW90b3dvcmxkOnRvcHNlY3JldA=='
+    //     },
+    //     json: true,
+    //     url: 'http://motoworld.me/api/oauth2/token',
+    //     body: jsonObj
+    // }, function (error, response, body) {
 
 
         res.setHeader('Authorization', 'Bearer '+ body.access_token.value);
         res.setHeader('userId', body.access_token.userId);
         res.redirect('http://motoworld.me/success');
 
-    });
+    // });
 
 
 };
