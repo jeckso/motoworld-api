@@ -15,16 +15,27 @@ module.exports.getByUserId = (req, res) => {
         });
 };
 exports.loginUsers = function(req, res) {
-    var user = new User({
+    var user1 = new User({
         username: req.body.username,
         password: req.body.password
     });
-    User.findById(req.body.username, (err, user) => {
+
+    User.find({"password":req.body.password}, function (err, user){
+        console.log(user1.password+"V pizde");
         if (err) {
             return res.status(500).send(err)
-        } else {
-            //if(Use)  // return res.status(200).send(category);
         }
+        else {
+            User.verifyPassword(req.body.username, function(err, isMatch) {
+                if (err) { return callback(err); }
+// Password did not match
+                if (!isMatch) { return res.status(500).send(err); }
+
+                // Success
+                return res.status(302).send(user).setHeader('Authorization', 'Basic '+Buffer.from(req.body.username+":"+req.body.password).toString('base64'));
+            });
+
+            }
     });
 
 };
