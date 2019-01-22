@@ -17,7 +17,7 @@ const order = require('./routes/order');
 const products = require('./routes/product');
 const categories = require('./routes/category');
 const oauth2 = require('./routes/oauth2');
-const image = require('./routes/image');
+// const image = require('./routes/image');
 // const oauth = require('./lib/image');
 
 var userController = require('./controllers/user');
