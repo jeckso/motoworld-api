@@ -127,7 +127,7 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log('Server started on port ' + port);
 });
-app.use('/image', image);
+// app.use('/image', image);
 app.use('/api2',oauth2);
 app.use('/api', router);
 app.use('/clients', client);
