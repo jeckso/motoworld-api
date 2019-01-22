@@ -96,7 +96,7 @@ module.exports.CodePost = (req, res,callback) => {
         grant_type: 'authorization_code',
         redirect_uri: 'http://motoworld.me/api2/'
     };
-    console.log(jsonObj.code);
+    // console.log(jsonObj.code);
     request.post({
         headers: {
             'content-type': 'application/json',
