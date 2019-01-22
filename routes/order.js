@@ -1,11 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const orders = require('../controllers/order')
+const orders = require('../controllers/order');
 
 router.post('/', (req, res) => {
+
     orders.create(req, res);
+
 });
 
+router.get('/:id', (req, res) => {
+    orders.findById(req, res);
+});
 router.get('/:id', (req, res) => {
     orders.findById(req, res);
 });

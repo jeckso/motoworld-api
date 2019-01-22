@@ -22,3 +22,17 @@ ProductSchema
 
 const Product = module.exports = mongoose.model('Product', ProductSchema);
 
+module.exports.findAll = (ids, cb) => {
+    let objectIds = ids.map(id => mongoose.Types.ObjectId(id));
+    Product.find({
+        '_id': {
+            $in: objectIds
+        }
+    }, function (err, docs) {
+        if (err) {
+            throw  err;
+        }
+        cb(docs);
+    });
+}
+

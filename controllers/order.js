@@ -1,21 +1,69 @@
 const Order = require('../models/order');
-
+const products = require('../controllers/product');
+const Product = require('../models/product');
 
 function createOrderFromBody(body) {
     let order = {};
     order.description = body.description;
     order.delivery = body.delivery;
+    order.items = body.items;
     order.products = body.products;
     order.date_of_creation = body.date_of_creation ? body.date_of_creation : Date();
     return order;
 }
 
-module.exports.create = (req, res) => {
-    const order = new Order(createOrderFromBody(req.body));
-    order.save(err => {
-        if (err) return res.status(500).send(err);
-        return res.status(201).send(order);
+function createOrderFromBodyAsync(body, callback) {
+    let order = {};
+    order.description = body.description;
+    order.delivery = body.delivery;
+    order.items = body.items;
+    order.products = body.products;
+    order.date_of_creation = body.date_of_creation ? body.date_of_creation : Date();
+    Product.findAll(order.items.map(i => i.id), p => {
+        let sum = 0;
+        for (let i in p) {
+            sum += p[i].price * order.items[i].quantity;
+        }
+        order.sum = sum;
+        callback(order)
     });
+}
+
+module.exports.create = (req, res) => {
+    createOrderFromBodyAsync(req.body, orderBody => {
+        const order = new Order(orderBody);
+        order.save(err => {
+            if (err) return res.status(500).send(err);
+            else return res.status(201).send(order);
+            // products.findByIdSync(req.body.items, sum => {
+            //
+            // });
+        });
+    });
+   // Product.findById(idprod,(err, product) => {
+   //     if (err) {
+   //         return "fuck you"
+   //     } else {
+   //         return console.log(product.price);
+   //     }
+   // });
+   //  console.log(req.body.items);
+
+
+    // order.items.forEach(item =>
+    //
+    //     // Product.findById(item.get("id"),(err, product) => {
+    //     //     if (err) {
+    //     //         return "fuck you"
+    //     //     } else {
+    //     //         return product.price;
+    //     //     }
+    //     // })
+    //
+    // );
+    // order.items.forEach(item => console.log(item.get("id") + " " + item.get("quantity")));
+
+
 };
 
 module.exports.findById = (req, res) => {
@@ -23,7 +71,10 @@ module.exports.findById = (req, res) => {
         if (err) {
             return res.status(500).send(err)
         } else {
-            return res.status(200).send(order);
+            order.getSum(s => {
+                console.log(s);
+                res.status(200).send(order);
+            })
         }
     });
 };

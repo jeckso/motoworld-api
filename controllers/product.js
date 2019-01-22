@@ -30,20 +30,15 @@ module.exports.findById = (req, res) => {
     });
 };
 
-module.exports.getByProductId = (req, res) => {
-    Product.find()
-        .select()
-        .where('category', req.params.category_id)
-        .sort({ name: 'asc' })
-        .exec((err, products) => {
-            if (err) {
-                return res.status(500).send(err)
-            } else {
-                return res.status(200).send(products);
-            }
-        });
-
-};
+// module.exports.findByIdSync = async (products, callback) => {
+//     let sum = 0;
+//     for (var i in products) {
+//         const quantity = products[i].quantity;
+//         const product = await Product.findById(products[i].id).exec();
+//         sum += product.price * quantity;
+//     }
+//     callback(sum);
+// };
 
 module.exports.getAll = (req, res) => {
     Product.find()
