@@ -19,7 +19,19 @@ module.exports.create = (req, res) => {
         return res.status(201).send(new Product(product));
     });
 };
-
+module.exports.getByProductId = (req, res) => {
+    Product.find()
+        .select()
+        .where('category', req.category_id)
+        .sort({ name: 'asc' })
+        .exec((err, products) => {
+            if (err) {
+                return res.status(500).send(err)
+            } else {
+                return res.status(200).send(products);
+            }
+        });
+};
 module.exports.findById = (req, res) => {
     Product.findById(req.params.id, (err, product) => {
         if (err) {
