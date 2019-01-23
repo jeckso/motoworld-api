@@ -19,14 +19,15 @@ exports.loginUsers = function(req, res) {
     User.find({"username":req.body.username}, function (err, user){
 
         if (err) {
-            return res.status(500).send(err)
+            return res.status(500).send(err);
         }
+        else if(user[0] == null) return res.status(500).send("No such user");
         else {
-            console.log(user[0].password);
+
             bcrypt.compare(req.body.password, user[0].password,function(err, isMatch) {
                 if (err) { return res.status(500).send(err); }
 // Password did not match
-                if (!isMatch) { return res.status(500).send('TY PIDOR'); }
+                if (!isMatch) { return res.status(500).send("Wrong password"); }
 
                 // Success
                 return res.status(302).json({"token":'Basic '+Buffer.from(req.body.username+":"+req.body.password).toString('base64'),"_id":"5c476ef846e5e378fc702415"});

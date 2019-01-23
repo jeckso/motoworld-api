@@ -96,8 +96,7 @@ router.route('/users')
     .post(userController.postUsers)
     .get(authController.isAuthenticated, userController.getUsers);
 router.route('/users/login')
-    .post(userController.loginUsers)
-    .get(authController.isAuthenticated, userController.getUsers);
+    .post(userController.loginUsers);
 // Create endpoint handlers for /clients
 router.route('/clients')
     .post(authController.isAuthenticated, clientController.postClients)
