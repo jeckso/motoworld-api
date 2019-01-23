@@ -5,7 +5,7 @@ var authController = require('../controllers/auth/local');
 const app = express();
 router.route('/')
     .post(authController.isAuthenticated, produtcs.create)
-    .get(produtcs.getAll);
+    .get(authController.isAuthenticated,produtcs.getAll);
 
 
 router.get('/:id', (req, res) => {
