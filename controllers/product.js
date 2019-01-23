@@ -12,14 +12,13 @@ function createBodyFromBody(body) {
 }
 
 module.exports.create = (req, res) => {
-    if(req.params._id==="5c476ef846e5e378fc702415"){
+
     let product = new Product(createBodyFromBody(req.body));
     console.log(product);
     product.save(err => {
         if (err) return res.status(500).send(err);
         return res.status(201).send(new Product(product));
-    });}
-    else return res.status(401).send("Forbidden");
+    });
 };
 module.exports.getByProductId = (req, res) => {
     Product.find()

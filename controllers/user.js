@@ -55,12 +55,11 @@ exports.postUsers = function(req, res) {
 
 // Create endpoint /api/users for GET
 exports.getUsers = function(req, res) {
-    if(req.params._id==="5c476ef846e5e378fc702415"){
+
     User.find(function(err, users) {
         if (err)
             return res.send(err);
 
         res.json(users);
-    });}
-    else return res.code(401).send("Forbidden");
+    });
 };

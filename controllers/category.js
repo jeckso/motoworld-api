@@ -8,14 +8,13 @@ function createCategoryFromBody(body) {
 }
 
 module.exports.create = (req, res) => {
-    if(req.params._id==="5c476ef846e5e378fc702415"){
+
     let category = new Category(createCategoryFromBody(req.body));
     console.log(category);
     category.save(err => {
         if (err) return res.status(500).send(err);
         return res.status(201).send(new Category(category));
-    });}
-    else return res.status(401).send("Forbidden");
+    });
 };
 
 module.exports.findById = (req, res) => {

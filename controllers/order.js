@@ -84,7 +84,7 @@ module.exports.findById = (req, res) => {
 };
 
 module.exports.getAll = (req, res) => {
-    if(req.params._id==="5c476ef846e5e378fc702415"){
+
     Order.find()
         .select()
         .limit(req.query.pageSize)
@@ -98,8 +98,7 @@ module.exports.getAll = (req, res) => {
             } else {
                 return res.status(200).send(orders);
             }
-        });}
-    else return res.status(401).send("Forbidden");
+        });
 };
 
 module.exports.update = (req, res) => {
