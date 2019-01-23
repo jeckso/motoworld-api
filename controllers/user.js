@@ -30,7 +30,7 @@ exports.loginUsers = function(req, res) {
                 if (!isMatch) { return res.status(500).send("Wrong password"); }
 
                 // Success
-                return res.status(302).json({"token":'Basic '+Buffer.from(req.body.username+":"+req.body.password).toString('base64'),"_id":"5c476ef846e5e378fc702415"});
+                return res.status(200).json({"token":'Basic '+Buffer.from(req.body.username+":"+req.body.password).toString('base64'),"_id":"5c476ef846e5e378fc702415"});
             });
 
             }

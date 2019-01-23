@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     users.getAll(req, res);
 });
 router.get('/:id/orders', (req, res) => {
-    console.log(req);
+
     users.getByUserId(req, res);
 });
 router.delete('/:id', (req, res) => {

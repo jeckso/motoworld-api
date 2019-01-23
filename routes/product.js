@@ -1,15 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const produtcs = require('../controllers/product');
+var authController = require('../controllers/auth/local');
 const app = express();
+router.route('/')
+    .post(authController.isAuthenticated, produtcs.create)
+    .get(produtcs.getAll);
 
-router.post('/', (req, res) => {
-    produtcs.create(req, res);
-});
 
 router.get('/:id', (req, res) => {
     produtcs.findById(req, res);
 });
+
 
 router.get('/', (req, res) => {
     produtcs.getAll(req, res);
