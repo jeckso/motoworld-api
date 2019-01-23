@@ -1,4 +1,5 @@
 // Load required packages
+var bcrypt = require('bcrypt-nodejs');
 var Order = require('../models/order');
 var User = require('../models/user');
 module.exports.getByUserId = (req, res) => {
@@ -15,24 +16,20 @@ module.exports.getByUserId = (req, res) => {
         });
 };
 exports.loginUsers = function(req, res) {
-    var user1 = new User({
-        username: req.body.username,
-        password: req.body.password
-    });
+    User.find({"username":req.body.username}, function (err, user){
 
-    User.find({"password":req.body.password}, function (err, user){
-        console.log(user1.password+"V pizde");
         if (err) {
             return res.status(500).send(err)
         }
         else {
-            User.verifyPassword(req.body.username, function(err, isMatch) {
-                if (err) { return callback(err); }
+            console.log(user[0].password);
+            bcrypt.compare(req.body.password, user[0].password,function(err, isMatch) {
+                if (err) { return res.status(500).send(err); }
 // Password did not match
-                if (!isMatch) { return res.status(500).send(err); }
+                if (!isMatch) { return res.status(500).send('TY PIDOR'); }
 
                 // Success
-                return res.status(302).send(user).setHeader('Authorization', 'Basic '+Buffer.from(req.body.username+":"+req.body.password).toString('base64'));
+                return res.status(302).json({"token":'Basic '+Buffer.from(req.body.username+":"+req.body.password).toString('base64'),"_id":"5c476ef846e5e378fc702415"});
             });
 
             }

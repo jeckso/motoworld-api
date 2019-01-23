@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node %NODE_DEBUG_OPTION% app"
   },
   "dependencies": {
     "@google-cloud/storage": "^2.3.4",
