@@ -16,7 +16,7 @@ router.get('/', authController.isAuthenticated,orders.getAll);
 
 router.get('/:id', authController.isAuthenticated, orders.findById);
 
-app.post('/',authController.isAuthenticated, orders.create);
+router.post('/', orders.create);
 
 router.put('/:id', authController.isAuthenticated, orders.update);
 router.delete('/:id', authController.isAuthenticated, orders.delete);
